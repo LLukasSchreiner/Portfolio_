@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lukas Schreiner — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-box">L</div>
+      LUKAS
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">À propos</a></li>
+      <li><a href="#projets">Projets</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Collaborer</a>
+  </nav>
+
+  <!-- HERO -->
+    <section class="hero" id="hero">
+        <!-- Three.js canvas injecté ici par three-scene.js -->
+        <canvas id="hero-canvas"></canvas>
+
+        <div class="hero-content">
+            <div class="hero-badge">No. 1 — Développeur Web &amp; Designer</div>
+            <h1 class="hero-title">
+                Code &amp; <span class="inverted">Design.</span><br>À votre service.
+            </h1>
+            
+            <p class="hero-sub">
+                Étudiant en MMI à l'Université de Strasbourg. Je conçois des interfaces qui marquent les esprits.
+            </p>
+            <div class="hero-actions">
+                <a href="#projets" class="btn-primary">Voir mes projets</a>
+                <a href="#contact" class="btn-secondary">Me contacter</a>
+            </div>
+        </div>
+
+        <div class="hero-scroll">
+            <div class="hero-scroll-line"></div>
+            Scroll
+        </div>
+    </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <div class="marquee-item">DÉVELOPPEMENT WEB <span>✦</span> DESIGN UI/UX <span>✦</span> LARAVEL <span>✦</span> REACT <span>✦</span> MARKETING DIGITAL <span>✦</span> IDENTITÉ VISUELLE <span>✦</span> THREE.JS <span>✦</span> DÉVELOPPEMENT WEB <span>✦</span> DESIGN UI/UX <span>✦</span> LARAVEL <span>✦</span> REACT <span>✦</span> MARKETING DIGITAL <span>✦</span> IDENTITÉ VISUELLE <span>✦</span> THREE.JS <span>✦</span></div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-visual reveal">
+      <canvas id="about-canvas"></canvas>
+    </div>
+    <div class="about-content reveal">
+      <div class="section-label">À propos</div>
+      <h2 class="about-title">Créateur d'expériences numériques</h2>
+      <p class="about-text">
+        Passionné par l'intersection entre la technique et l'esthétique, je conçois et développe des applications web avec une attention obsessionnelle aux détails. Chaque projet est une opportunité de repousser les limites du possible.
+      </p>
+      <div class="skills-grid">
+        <span class="skill-tag">Laravel</span>
+        <span class="skill-tag">React</span>
+        <span class="skill-tag">Livewire</span>
+        <span class="skill-tag">Figma</span>
+        <span class="skill-tag">Tailwind CSS</span>
+        <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">Three.js</span>
+        <span class="skill-tag">Framer Motion</span>
+        <span class="skill-tag">TypeScript</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="projects" id="projets">
+    <div class="projects-header reveal">
+      <div>
+        <div class="section-label" style="color:#444">Projets sélectionnés</div>
+        <h2 class="projects-title">Mes<br>Réalisations.</h2>
+      </div>
+      <span class="projects-count">04 PROJETS</span>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card featured reveal">
+        <div class="project-num">01 / 04</div>
+        <div class="project-category">Application Web</div>
+        <h3 class="project-name">SAE501 — Gestion de Projets</h3>
+        <p class="project-desc">Application collaborative de gestion de projets académiques. Fonctionnalités Scrum/Kanban, prise de notes, et tableaux de bord en temps réel.</p>
+        <div class="project-tags">
+          <span class="project-tag">Laravel</span>
+          <span class="project-tag">Livewire</span>
+          <span class="project-tag">MySQL</span>
+          <span class="project-tag">Tailwind</span>
+        </div>
+        <a href="#" class="project-link">Voir le projet</a>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-num">02 / 04</div>
+        <div class="project-category">Gestion</div>
+        <h3 class="project-name">Spool Tracker</h3>
+        <p class="project-desc">Dashboard de gestion de stock de filaments d'impression 3D avec alertes intelligentes et historique de consommation.</p>
+        <div class="project-tags">
+          <span class="project-tag">React</span>
+          <span class="project-tag">Vite</span>
+          <span class="project-tag">TypeScript</span>
+        </div>
+        <a href="#" class="project-link">Voir le projet</a>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-num">03 / 04</div>
+        <div class="project-category">Accessibilité</div>
+        <h3 class="project-name">Peugeot 406 V6</h3>
+        <p class="project-desc">Site web optimisé RGAA 4.1 avec accessibilité totale pour lecteurs d'écran et navigation clavier.</p>
+        <div class="project-tags">
+          <span class="project-tag">HTML/CSS</span>
+          <span class="project-tag">RGAA 4.1</span>
+          <span class="project-tag">JS</span>
+        </div>
+        <a href="#" class="project-link">Voir le projet</a>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-num">04 / 04</div>
+        <div class="project-category">Jeu Web</div>
+        <h3 class="project-name">Neon Breach</h3>
+        <p class="project-desc">Simulation de hacking cyberpunk en navigateur avec mécaniques de jeu élaborées et effets visuels.</p>
+        <div class="project-tags">
+          <span class="project-tag">Canvas API</span>
+          <span class="project-tag">Vanilla JS</span>
+        </div>
+        <a href="#" class="project-link">Voir le projet</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stat-item reveal">
+      <div class="stat-num" data-target="11" data-suffix="+">0</div>
+      <div class="stat-label">Projets réalisés</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num" data-target="3">0</div>
+      <div class="stat-label">Années d'études</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Lignes de code</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num" data-target="1" data-suffix="er">0</div>
+      <div class="stat-label">Objectif : l'excellence</div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="services-header reveal">
+      <h2 class="services-title">Ce que<br>je <em>fais.</em></h2>
+      <p class="services-text">
+        Du concept à la mise en production, j'accompagne chaque étape avec rigueur et créativité. Design thinking, développement propre, et performance optimisée.
+      </p>
+    </div>
+    <div class="service-list reveal">
+      <div class="service-item">
+        <span class="service-num">01</span>
+        <span class="service-name">Développement Web Full-Stack</span>
+        <span class="service-arrow">→</span>
+      </div>
+      <div class="service-item">
+        <span class="service-num">02</span>
+        <span class="service-name">Design d'Interface &amp; UX</span>
+        <span class="service-arrow">→</span>
+      </div>
+      <div class="service-item">
+        <span class="service-num">03</span>
+        <span class="service-name">Identité Visuelle &amp; Graphisme</span>
+        <span class="service-arrow">→</span>
+      </div>
+      <div class="service-item">
+        <span class="service-num">04</span>
+        <span class="service-name">Marketing Digital &amp; SEO</span>
+        <span class="service-arrow">→</span>
+      </div>
+      <div class="service-item">
+        <span class="service-num">05</span>
+        <span class="service-name">Déploiement &amp; Maintenance</span>
+        <span class="service-arrow">→</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <canvas id="contact-canvas"></canvas>
+    <div class="contact-inner">
+      <div class="section-label contact-label reveal">Contact</div>
+      <h2 class="contact-title reveal">
+        Travaillons<br><span class="underline-white">ensemble.</span>
+      </h2>
+      <p class="contact-sub reveal">Un projet en tête ? Parlons-en.</p>
+      <a href="mailto:lukas@schreiner.dev" class="contact-email reveal">lukas@schreiner.dev</a>
+      <div class="contact-socials reveal">
+        <a href="#" class="contact-social">GitHub</a>
+        <a href="#" class="contact-social">LinkedIn</a>
+        <a href="#" class="contact-social">GitLab</a>
+        <a href="#" class="contact-social">Behance</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2025 Lukas Schreiner</span>
+    <span>MMI — Université de Strasbourg</span>
+    <span>Fait avec ♥ et du café</span>
+  </footer>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <!-- Scripts -->
+  <script src="three-scene.js"></script>
+  <script src="hero-text.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
