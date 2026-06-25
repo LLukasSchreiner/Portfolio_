@@ -472,13 +472,125 @@ nav.scrolled {
 .projects-count {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: #555;
+  color: #8a8a8a;
   letter-spacing: 0.15em;
+}
+
+/* Côté droit de l'en-tête projets : compteur + interrupteur compétences */
+.projects-header-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+/* Interrupteur discret on/off */
+.competences-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #777;
+  transition: color 0.2s ease;
+}
+
+.competences-toggle:hover {
+  color: #ccc;
+}
+
+.competences-toggle-switch {
+  position: relative;
+  width: 34px;
+  height: 18px;
+  border-radius: 999px;
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  transition: background 0.25s ease, border-color 0.25s ease;
+  flex-shrink: 0;
+}
+
+.competences-toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #888;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.competences-toggle.is-on {
+  color: var(--white);
+}
+
+.competences-toggle.is-on .competences-toggle-switch {
+  background: var(--white);
+  border-color: var(--white);
+}
+
+.competences-toggle.is-on .competences-toggle-knob {
+  transform: translateX(16px);
+  background: var(--black);
+}
+
+/* Badges de compétences sur les cartes — masqués par défaut */
+.project-competences {
+  display: none;
+  margin-bottom: 28px;
+  padding: 14px 16px;
+  border: 1px dashed #3d3d3d;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+#projets.show-competences .project-competences {
+  display: block;
+  animation: competencesIn 0.3s ease;
+}
+
+@keyframes competencesIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.project-competences-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.project-competences-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.project-competence {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--white);
+  padding: 4px 10px;
+  border-radius: 2px;
 }
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5px;
 }
 
@@ -489,6 +601,7 @@ nav.scrolled {
   overflow: hidden;
   transition: background 0.3s, transform 0.3s;
   border: 1.5px solid #1c1c1c;
+  cursor: pointer;
 }
 
 .project-card::before {
@@ -504,15 +617,21 @@ nav.scrolled {
   transform: translateY(-4px);
 }
 
+/* Toutes les cartes occupent une moitié (grille 50/50). */
 .project-card.featured {
-  grid-column: span 2;
+  grid-column: span 1;
+}
+
+/* Si le nombre de projets est impair, la dernière carte occupe toute la ligne. */
+.project-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 .project-num {
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.2em;
-  color: #444;
+  color: #777;
   margin-bottom: 40px;
 }
 
@@ -521,7 +640,7 @@ nav.scrolled {
   font-size: 9px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #555;
+  color: #8a8a8a;
   margin-bottom: 12px;
 }
 
@@ -536,7 +655,7 @@ nav.scrolled {
 
 .project-desc {
   font-size: 13px;
-  color: #666;
+  color: #9a9a9a;
   line-height: 1.6;
   margin-bottom: 32px;
 }
@@ -553,8 +672,8 @@ nav.scrolled {
   font-size: 9px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  border: 1px solid #333;
-  color: #555;
+  border: 1px solid #555;
+  color: #b8b8b8;
   padding: 4px 10px;
 }
 
@@ -779,6 +898,318 @@ nav.scrolled {
   justify-content: center;
   gap: 16px;;
 }
+
+/* ===========================
+   PROJECT MODAL
+=========================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  background: rgba(5, 5, 5, 0.86);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-box {
+  background: #111;
+  border: 1.5px solid #2a2a2a;
+  width: min(880px, 100%);
+  max-height: min(88vh, 920px);
+  position: relative;
+  transform: translateY(24px) scale(0.98);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+}
+
+.modal-overlay.open .modal-box {
+  transform: translateY(0) scale(1);
+}
+
+.modal-scroll {
+  width: 100%;
+  max-height: min(88vh, 920px);
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 5;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #333;
+  background: rgba(10, 10, 10, 0.6);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close span {
+  position: absolute;
+  width: 16px;
+  height: 1.5px;
+  background: var(--white);
+}
+
+.modal-close span:first-child { transform: rotate(45deg); }
+.modal-close span:last-child  { transform: rotate(-45deg); }
+
+.modal-close:hover {
+  background: var(--white);
+}
+.modal-close:hover span {
+  background: var(--black);
+}
+
+.modal-gallery {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0a0a0a;
+  overflow: hidden;
+}
+
+.modal-gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Galerie multi-captures : grille de vignettes cliquables */
+.modal-gallery.has-images {
+  aspect-ratio: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+  padding: 14px;
+  background: #0a0a0a;
+}
+
+.modal-gallery.has-images img {
+  width: 100%;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid #1c1c1c;
+  cursor: zoom-in;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.modal-gallery.has-images img:hover {
+  transform: scale(1.04);
+  border-color: #666;
+}
+
+/* ===========================
+   LIGHTBOX — agrandissement d'une capture
+=========================== */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: rgba(3, 3, 3, 0.94);
+  backdrop-filter: blur(4px);
+  cursor: zoom-out;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.lightbox.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox img {
+  max-width: 92vw;
+  max-height: 88vh;
+  object-fit: contain;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+  cursor: default;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #777;
+  border-radius: 50%;
+  color: var(--white);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.lightbox-close:hover {
+  background: var(--white);
+  color: var(--black);
+}
+
+.modal-gallery-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #3a3a3a;
+}
+
+.modal-body {
+  padding: 40px 44px 48px;
+}
+
+.modal-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.modal-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #888;
+}
+
+.modal-category {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #b8b8b8;
+  border: 1px solid #555;
+  padding: 4px 10px;
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 42px;
+  letter-spacing: 0.03em;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.modal-desc {
+  font-size: 15px;
+  color: #b0b0b0;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.modal-section {
+  margin-bottom: 28px;
+}
+
+.modal-section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+  margin-bottom: 14px;
+}
+
+.modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.modal-longtext {
+  font-size: 14px;
+  color: #a8a8a8;
+  line-height: 1.75;
+}
+
+.modal-longtext p {
+  margin-bottom: 14px;
+}
+
+.modal-longtext p:last-child {
+  margin-bottom: 0;
+}
+
+.modal-iut {
+  margin-bottom: 28px;
+  border-left: 2px solid var(--white);
+  padding-left: 18px;
+}
+
+.modal-iut-text {
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.7;
+}
+
+.modal-actions {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.modal-actions [hidden] {
+  display: none;
+}
+
+.modal-actions .btn-primary,
+.modal-actions .btn-secondary {
+  background: var(--white);
+  color: var(--black);
+  border-color: var(--white);
+}
+
+.modal-actions .btn-primary:hover,
+.modal-actions .btn-secondary:hover {
+  background: transparent;
+  color: var(--white);
+}
+
+.modal-actions .btn-primary[aria-disabled="true"] {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .modal-overlay { padding: 0; }
+  .modal-box { width: 100%; max-height: 100vh; height: 100%; }
+  .modal-scroll { max-height: 100vh; }
+  .modal-title { font-size: 30px; }
+  .modal-body { padding: 32px 24px 40px; }
+}
+
 /* ===========================
    FOOTER
 =========================== */
@@ -853,9 +1284,6 @@ footer span {
   .projects-grid {
     grid-template-columns: 1fr 1fr;
   }
-  .project-card.featured {
-    grid-column: span 2;
-  }
 }
 
 @media (max-width: 900px) {
@@ -894,4 +1322,159 @@ footer span {
     gap: 8px;
     text-align: center;
   }
+}
+
+/* ===========================
+   ABOUT — SEAU DE LOGOS TECH (physique Matter.js)
+=========================== */
+.about-visual { overflow: hidden; }   /* déjà position:relative + height:420px */
+
+.bucket-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* Un logo = un bouton positionné/orienté par Matter via transform inline */
+.tech-chip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: none;            /* le curseur custom prend le relais */
+  will-change: transform;
+}
+.tech-chip img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;    /* le clic est capté par le bouton parent */
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 6px 14px rgba(10, 10, 10, 0.14));
+  transition: transform 0.18s ease;
+}
+.tech-chip:hover img { transform: scale(1.12); }
+
+/* Le seau dessiné : corps trapézoïdal plein, ouverture en ellipse + anse */
+.bucket-gfx {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  /* corps plein, plus large en haut qu'en bas */
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(255, 255, 255, 0.04) 0 10px,
+      rgba(0, 0, 0, 0.05) 10px 20px),
+    linear-gradient(180deg, #242424 0%, #0a0a0a 100%);
+  clip-path: polygon(2% 0, 98% 0, 86% 100%, 14% 100%);
+  box-shadow: inset 0 -10px 18px rgba(0, 0, 0, 0.45);
+}
+/* cerclages du seau */
+.bucket-gfx::after {
+  content: '';
+  position: absolute;
+  inset: 22% 6% auto 6%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 32px 0 rgba(255, 255, 255, 0.10);
+}
+/* ombre portée au sol */
+.bucket-shadow {
+  position: absolute;
+  z-index: 0;
+  background: radial-gradient(ellipse at center,
+    rgba(10, 10, 10, 0.22) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.bucket-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gray);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.about-visual.poured .bucket-hint { opacity: 1; }
+
+/* Modal inline d'une techno (remplace l'avatar dans la zone) */
+.tech-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 14px;
+  padding: 36px;
+  background: var(--white);
+  border: 1.5px solid var(--black);
+}
+.tech-modal.open { display: flex; }
+
+.tech-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--black);
+  background: transparent;
+  cursor: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tech-modal-close::before,
+.tech-modal-close::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 1.5px;
+  background: var(--black);
+}
+.tech-modal-close::before { transform: rotate(45deg); }
+.tech-modal-close::after  { transform: rotate(-45deg); }
+.tech-modal-close:hover { background: var(--black); }
+.tech-modal-close:hover::before,
+.tech-modal-close:hover::after { background: var(--white); }
+
+.tech-modal-logo {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 4px;
+}
+.tech-modal-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+.tech-modal-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.tech-modal-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1;
+}
+.tech-modal-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--mid);
+  max-width: 36ch;
 }

@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lukas Schreiner — Portfolio</title>
+  <title>Lukas Schreiner - Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./models/logo.png">
 </head>
 <body>
 
@@ -64,14 +65,19 @@
 
   <!-- ABOUT -->
   <section class="about" id="about">
-    <div class="about-visual reveal">
-      <canvas id="about-canvas"></canvas>
+    <div class="about-visual reveal" id="techBucket">
+      <!-- Logos tech : flottement + interactions, injectés par tech-bucket.js -->
+      <div class="bucket-stage" id="bucketStage"></div>
+      <div class="bucket-gfx" id="bucketGfx" aria-hidden="true"></div>
+      <div class="bucket-hint" aria-hidden="true"></div>
+      <!-- Modal inline d'une techno (remplace l'avatar dans la zone) -->
+      <div class="tech-modal" id="techModal" aria-hidden="true"></div>
     </div>
     <div class="about-content reveal">
       <div class="section-label">À propos</div>
-      <h2 class="about-title">Créateur d'expériences numériques</h2>
+      <h2 class="about-title">Développeur Full-Stack</h2>
       <p class="about-text">
-        Passionné par l'intersection entre la technique et l'esthétique, je conçois et développe des applications web avec une attention obsessionnelle aux détails. Chaque projet est une opportunité de repousser les limites du possible.
+        Je développe des applications web de bout en bout, du back-end à l'interface. Curieux par nature, j'aime creuser le fonctionnement des outils que j'utilise plutôt que de m'arrêter à la surface.
       </p>
       <div class="skills-grid">
         <span class="skill-tag">Laravel</span>
@@ -92,49 +98,19 @@
   <section class="projects" id="projets">
     <div class="projects-header reveal">
       <div>
-        <div class="section-label" style="color:#444">Projets sélectionnés</div>
+        <div class="section-label" style="color:#8a8a8a">Projets sélectionnés</div>
         <h2 class="projects-title">Mes<br>Réalisations.</h2>
       </div>
-      <span class="projects-count">04 PROJETS</span>
-    </div>
-    <div class="projects-grid">
-      <div class="project-card featured reveal">
-        <div class="project-num">01 / 04</div>
-        <div class="project-category">Application Web</div>
-        <h3 class="project-name">SAE501 — Gestion de Projets</h3>
-        <p class="project-desc">Application collaborative de gestion de projets académiques. Fonctionnalités Scrum/Kanban, prise de notes, et tableaux de bord en temps réel.</p>
-        <div class="project-tags">
-          <span class="project-tag">Laravel</span>
-          <span class="project-tag">Livewire</span>
-          <span class="project-tag">MySQL</span>
-          <span class="project-tag">Tailwind</span>
-        </div>
-        <a href="#" class="project-link">Voir le projet</a>
-      </div>
-      <div class="project-card reveal">
-        <div class="project-num">03 / 04</div>
-        <div class="project-category">Accessibilité</div>
-        <h3 class="project-name">Peugeot 406 V6</h3>
-        <p class="project-desc">Site web optimisé RGAA 4.1 avec accessibilité totale pour lecteurs d'écran et navigation clavier.</p>
-        <div class="project-tags">
-          <span class="project-tag">HTML/CSS</span>
-          <span class="project-tag">RGAA 4.1</span>
-          <span class="project-tag">JS</span>
-        </div>
-        <a href="#" class="project-link">Voir le projet</a>
-      </div>
-      <div class="project-card reveal">
-        <div class="project-num">04 / 04</div>
-        <div class="project-category">Jeu Web</div>
-        <h3 class="project-name">Neon Breach</h3>
-        <p class="project-desc">Simulation de hacking cyberpunk en navigateur avec mécaniques de jeu élaborées et effets visuels.</p>
-        <div class="project-tags">
-          <span class="project-tag">Canvas API</span>
-          <span class="project-tag">Vanilla JS</span>
-        </div>
-        <a href="#" class="project-link">Voir le projet</a>
+      <div class="projects-header-aside">
+        <span class="projects-count">05 PROJETS</span>
+        <button type="button" class="competences-toggle" id="competencesToggle" aria-pressed="false" aria-controls="projets" title="Afficher les compétences BUT mises en œuvre">
+          <span class="competences-toggle-switch" aria-hidden="true"><span class="competences-toggle-knob"></span></span>
+          <span class="competences-toggle-label">Compétences</span>
+        </button>
       </div>
     </div>
+    <!-- Cartes générées par renderProjectCards() depuis projects-data.js -->
+    <div class="projects-grid"></div>
   </section>
 
   <!-- STATS -->
@@ -158,7 +134,7 @@
     <div class="services-header reveal">
       <h2 class="services-title">Ce que<br>je <em>fais.</em></h2>
       <p class="services-text">
-        Du concept à la mise en production, j'accompagne chaque étape avec rigueur et créativité. Design thinking, développement propre, et performance optimisée.
+        Du concept à la mise en production, j'accompagne chaque étape . Développement propre et performance optimisée.
       </p>
     </div>
     <div class="service-list reveal">
@@ -214,15 +190,60 @@
   <footer>
     <span>© 2025 Lukas Schreiner</span>
     <span>MMI — Université de Strasbourg</span>
-    <span>Fait avec ♥ et du café</span>
   </footer>
+
+  <!-- PROJECT MODAL -->
+  <div class="modal-overlay" id="projectModal" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" aria-label="Fermer">
+        <span></span><span></span>
+      </button>
+
+      <div class="modal-scroll">
+        <div class="modal-gallery" id="modalGallery"></div>
+
+        <div class="modal-body">
+          <div class="modal-meta">
+            <span class="modal-num" id="modalNum"></span>
+            <span class="modal-category" id="modalCategory"></span>
+          </div>
+          <h2 class="modal-title" id="modalTitle"></h2>
+          <p class="modal-desc" id="modalDesc"></p>
+
+          <div class="modal-section">
+            <div class="modal-section-label">Stack technique</div>
+            <div class="modal-tags" id="modalTags"></div>
+          </div>
+
+          <div class="modal-section">
+            <div class="modal-section-label">Le projet</div>
+            <div class="modal-longtext" id="modalLongtext"></div>
+          </div>
+
+          <div class="modal-iut" id="modalIut" hidden>
+            <div class="modal-section-label" id="modalIutLabel">Compétence développée — vision IUT</div>
+            <p class="modal-iut-text" id="modalIutText"></p>
+          </div>
+
+          <div class="modal-actions">
+            <a href="#" class="btn-primary" id="modalLink" target="_blank" rel="noopener">Voir le site</a>
+            <a href="#" class="btn-secondary" id="modalGithub" target="_blank" rel="noopener" hidden>Voir le code</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Three.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <!-- GSAP (animation seau de logos tech) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <!-- Scripts -->
   <script src="three-scene.js"></script>
+  <script src="tech-bucket.js"></script>
   <script src="hero-text.js"></script>
-  <script src="main.js"></script>
+  <script type="module" src="project-modal.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
